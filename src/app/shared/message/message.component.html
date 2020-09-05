@@ -1,5 +1,5 @@
 <ion-card #cardElement>
-  <ion-card-header>
+  <!-- <ion-card-header>
     <ion-toolbar class="z-0">
       <ion-buttons slot="end">
         <ion-button (click)="openActionSheet()">
@@ -11,8 +11,16 @@
         <ion-icon class="icon-favourite" *ngIf="message.favourite" name="heart-circle-outline"></ion-icon>
       </div>
     </ion-toolbar>
-  </ion-card-header>
+  </ion-card-header> -->
+  <ion-item>
+    <ion-icon slot="start" class="icon-favourite" *ngIf="message.favourite" name="heart-circle-outline"></ion-icon>
+    <ion-button fill="clear" slot="end" (click)="openActionSheet()">
+        <ion-icon slot="icon-only" name="ellipsis-horizontal-outline"></ion-icon>
+      </ion-button>
+  </ion-item>
   <ion-card-content>
-    {{message.main_message}}
+    <div class="message-content">
+      {{ message.main_message }}
+    </div>
   </ion-card-content>
 </ion-card>

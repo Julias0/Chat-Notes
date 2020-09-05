@@ -26,16 +26,18 @@ export class MessageInputComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const inputEnterKeyup$ = fromEvent<any>(this.messageInput.el, 'keyup')
-      .pipe(
-        filter(event => event.key === 'Enter')
-      );
+    // const inputEnterKeyup$ = fromEvent<any>(this.messageInput.el, 'keyup')
+    //   .pipe(
+    //     filter(event => event.key === 'Enter')
+    //   );
     const sendButtonClick$ = fromEvent(this.addMessageBtn.el, 'click');
 
-    const messageSend$ = merge(inputEnterKeyup$, sendButtonClick$)
+    // const messageSend$ = merge(inputEnterKeyup$, sendButtonClick$)
+    const messageSend$ = merge(sendButtonClick$)
       .pipe(
         filter(() => this.fg.controls.currentMessage.valid),
         map(() => this.fg.controls.currentMessage.value),
+        tap(console.log),
         tap(() => this.fg.controls.currentMessage.reset()),
         switchMap((message) => {
           return this.messagesService.addMessage(message);
