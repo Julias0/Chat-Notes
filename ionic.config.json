@@ -1,0 +1,7 @@
+{
+  "name": "chaotes",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
