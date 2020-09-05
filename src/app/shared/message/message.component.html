@@ -1,0 +1,18 @@
+<ion-card #cardElement>
+  <ion-card-header>
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button (click)="openActionSheet()">
+          <ion-icon slot="icon-only" name="ellipsis-horizontal-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <div class="info-box">
+        <div>{{message.created_at | date: 'shortTime'}}</div>
+        <ion-icon class="icon-favourite" *ngIf="message.favourite" name="heart-circle-outline"></ion-icon>
+      </div>
+    </ion-toolbar>
+  </ion-card-header>
+  <ion-card-content>
+    {{message.main_message}}
+  </ion-card-content>
+</ion-card>

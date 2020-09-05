@@ -1,0 +1,11 @@
+<ion-toolbar>
+  <form class="ion-padding" [formGroup]="fg">
+    <ion-input #messageInput formControlName="currentMessage" [autofocus]="true" placeholder="Enter message here" rows="1">
+    </ion-input>
+  </form>
+  <ion-buttons slot="end">
+    <ion-button #addMessage>
+      <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>

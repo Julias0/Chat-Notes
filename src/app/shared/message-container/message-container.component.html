@@ -1,0 +1,5 @@
+<div #messageContainer class="messages-container">
+    <app-message [message]="message" *ngFor="let message of messages$ | async as list"></app-message>
+</div>
+
+
