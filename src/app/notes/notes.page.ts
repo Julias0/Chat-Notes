@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotesPage implements OnInit {
 
+  searchText = '';
+  isSearchActive: boolean;
+
   constructor() { }
 
   ngOnInit() {
+    this.searchText = '';
+    this.isSearchActive = false;
   }
 
 }

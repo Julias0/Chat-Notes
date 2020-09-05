@@ -3,14 +3,22 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
+    <ion-title *ngIf="!isSearchActive">
       Notes
     </ion-title>
+    <div *ngIf="isSearchActive" class="notes-search-container">
+      <ion-input [(ngModel)]="searchText" placeholder="enter search here"></ion-input>
+    </div>
+    <ion-buttons slot="end">
+      <ion-button (click)="isSearchActive=!isSearchActive;searchText=''">
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <app-message-container></app-message-container>
+<ion-content class="ion-padding notes-container">
+  <app-message-container [searchText]="searchText"></app-message-container>
 </ion-content>
 <ion-footer class="ion-no-border">
   <app-message-input></app-message-input>

@@ -1,26 +1,28 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
-import { MessagesService } from 'src/app/core/services/messages.service';
-import { Observable, Subject, of } from 'rxjs';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Input, OnChanges } from '@angular/core';
+import { Observable, Subject, of, BehaviorSubject, concat, merge } from 'rxjs';
 import { Message } from 'src/app/core/models/message.model';
 import { map } from 'rxjs/internal/operators/map';
-import { delay, startWith, tap, concatMap, distinctUntilChanged } from 'rxjs/operators';
+import { delay, startWith, tap, concatMap, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { messageListType } from 'src/app/core/enums/messageListTypes.enum';
+import { SearchService } from 'src/app/core/services/search.service';
 
 @Component({
   selector: 'app-message-container',
   templateUrl: './message-container.component.html',
   styleUrls: ['./message-container.component.scss'],
 })
-export class MessageContainerComponent implements OnInit, AfterViewInit {
+export class MessageContainerComponent implements OnInit, AfterViewInit, OnChanges {
 
   @ViewChild('messageContainer') messageContainer: ElementRef;
   @Input() filterElements = messageListType.normal;
+  @Input() searchText = '';
+  searchText$: BehaviorSubject<string> = new BehaviorSubject('');
 
   messages$: Observable<Message[]>;
   updateDom$: Subject<any> = new Subject();
 
   constructor(
-    private messageService: MessagesService
+    private searchService: SearchService
   ) { }
 
   calculateDiff(date1, date2) {
@@ -52,26 +54,29 @@ export class MessageContainerComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
+  ngOnChanges() {
+    if (this.searchText$.getValue() !== this.searchText) {
+      this.searchText$.next(this.searchText);
+    }
+  }
+
   ngAfterViewInit() {
     const that = this;
-    that.messages$ = that.messageService.getMyMessages().pipe(
+
+    const searchFiltration$ = that.searchText$.pipe(
+      switchMap((search) => that.searchService.searchByText(that.filterElements, search))
+    );
+
+    that.messages$ = merge(
+      that.searchService.searchByText(that.filterElements, that.searchText),
+      searchFiltration$
+    ).pipe(
       startWith(new Array<Message>()),
-      map(messages => {
-        if (that.filterElements === messageListType.normal) {
-          return messages.filter(message => !message.soft_deleted);
-        } else if (that.filterElements === messageListType.deleted) {
-          return messages.filter(message => message.soft_deleted);
-        } else if (that.filterElements === messageListType.favourites) {
-          return messages.filter(message => message.favourite);
-        } else {
-          return messages;
-        }
-      }),
       map(messages => messages
         .sort(
           (a, b) => a.created_at.valueOf() - b.created_at.valueOf()
         )
-      ),
+      )
     );
 
     that.messages$.pipe(
