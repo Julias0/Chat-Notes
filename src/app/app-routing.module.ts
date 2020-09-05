@@ -9,22 +9,25 @@ const routes: Routes = [
   },
   {
     path: 'notes',
-    loadChildren: () => import('./notes/notes.module').then( m => m.NotesPageModule)
+    loadChildren: () => import('./notes/notes.module').then(m => m.NotesPageModule)
   },
   {
     path: 'favourites',
-    loadChildren: () => import('./favourites/favourites.module').then( m => m.FavouritesPageModule)
+    loadChildren: () => import('./favourites/favourites.module').then(m => m.FavouritesPageModule)
   },
   {
     path: 'deleted',
-    loadChildren: () => import('./deleted/deleted.module').then( m => m.DeletedPageModule)
+    loadChildren: () => import('./deleted/deleted.module').then(m => m.DeletedPageModule)
   }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules,
+      useHash: true
+    })
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
