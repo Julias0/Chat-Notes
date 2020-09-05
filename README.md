@@ -8,6 +8,10 @@ Fork it, make a pull request, do whatever you want with this!
 
 built with ionic.
 
+To see the running version inside a browser - 
+[App](https://awesome-borg-3113a3.netlify.app/#/notes)
+
+
 ## To run this
 
 Just do - 
