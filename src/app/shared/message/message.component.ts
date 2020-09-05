@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Message } from 'src/app/core/models/message.model';
 import { ActionSheetController, AlertController, ToastController } from '@ionic/angular';
 import { MessagesService } from 'src/app/core/services/messages.service';
+import { take } from 'rxjs/internal/operators/take';
 
 @Component({
   selector: 'app-message',
@@ -37,6 +38,9 @@ export class MessageComponent implements OnInit {
           handler: () => {
             that.messagesService
               .deleteMessage(that.message.id)
+              .pipe(
+                take(1)
+              )
               .subscribe(() => {
                 that.toastController.create({
                   message: 'Message is deleted successfully',
@@ -70,6 +74,9 @@ export class MessageComponent implements OnInit {
           handler: () => {
             that.messagesService
               .restoreMessage(that.message.id)
+              .pipe(
+                take(1)
+              )
               .subscribe(() => {
                 that.toastController.create({
                   message: 'Message is restored successfully',
