@@ -4,6 +4,9 @@ import { ActionSheetController, AlertController, ToastController } from '@ionic/
 import { MessagesService } from 'src/app/core/services/messages.service';
 import { take } from 'rxjs/internal/operators/take';
 
+import { Plugins } from '@capacitor/core';
+const { Share } = Plugins;
+
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
@@ -137,9 +140,35 @@ export class MessageComponent implements OnInit {
     };
   }
 
+  getShareAction() {
+    const that = this;
+    return {
+      text: 'Share',
+      icon: 'share-social',
+      handler: async () => {
+        try {
+          await Share.share({
+            text: this.message.main_message,
+            dialogTitle: 'Share your note'
+          });
+        } catch (error) {
+          that.toastController.create({
+            message: 'Sharing failed',
+            color: 'dark',
+            position: 'top',
+            duration: 800
+          }).then((toast) => {
+            toast.present();
+          });
+        }
+      }
+    };
+  }
+
   async openActionSheet() {
     const that = this;
     const buttons = [];
+    buttons.push(that.getShareAction());
     buttons.push(that.getDeleteAction());
     buttons.push(that.getFavouriteAction());
     buttons.push({
