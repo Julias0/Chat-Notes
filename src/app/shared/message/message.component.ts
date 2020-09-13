@@ -146,21 +146,10 @@ export class MessageComponent implements OnInit {
       text: 'Share',
       icon: 'share-social',
       handler: async () => {
-        try {
-          await Share.share({
-            text: this.message.main_message,
-            dialogTitle: 'Share your note'
-          });
-        } catch (error) {
-          that.toastController.create({
-            message: 'Sharing failed',
-            color: 'dark',
-            position: 'top',
-            duration: 800
-          }).then((toast) => {
-            toast.present();
-          });
-        }
+        await Share.share({
+          text: this.message.main_message,
+          dialogTitle: 'Share your note'
+        });
       }
     };
   }
