@@ -31,3 +31,5 @@ npm-debug.log*
 /www
 android
 .gradle
+
+src/environments/environment.prod.ts

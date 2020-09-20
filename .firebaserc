@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "chaotes-70bca": {
+      "hosting": {
+        "app": [
+          "chaotes-70bca"
+        ]
+      }
+    }
+  }
+}
