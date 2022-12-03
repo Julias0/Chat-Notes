@@ -10,6 +10,7 @@ import { StorageService } from './storage.service';
 export class MessagesService {
 
   private messages = new BehaviorSubject<Message[]>([]);
+  private ephemeralMessages = new BehaviorSubject<Message>(null);
 
   constructor(
     private storageService: StorageService
@@ -26,6 +27,24 @@ export class MessagesService {
     });
   }
 
+  addEphmeralMessage(messageBody: string) {
+    const that = this;
+    that.ephemeralMessages.next({
+      id: '1',
+      created_at: new Date(),
+      favourite: false,
+      soft_deleted: false,
+      main_message: messageBody
+    });
+
+    return that.getMyMessages();
+  }
+
+  getEphemeralMessage() {
+    const that = this;
+    return that.ephemeralMessages.asObservable();
+  }
+
   getMyMessages() {
     return this.messages.asObservable();
   }
@@ -40,6 +59,8 @@ export class MessagesService {
       soft_deleted: false,
       main_message: messageBody
     });
+
+    that.ephemeralMessages.next(null);
 
     that.storageService.set('my_messages', currentMessages).then(() =>{
       this.messages.next(currentMessages);

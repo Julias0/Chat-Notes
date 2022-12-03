@@ -1,48 +1,113 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
-import { fromEvent, noop, merge, concat } from 'rxjs';
-import { map, filter, tap, concatMap, mergeMap, switchMap } from 'rxjs/operators';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessagesService } from 'src/app/core/services/messages.service';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  ElementRef,
+} from "@angular/core";
+import { fromEvent, noop, merge, concat } from "rxjs";
+import {
+  map,
+  filter,
+  tap,
+  concatMap,
+  mergeMap,
+  switchMap,
+} from "rxjs/operators";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MessagesService } from "src/app/core/services/messages.service";
 
 @Component({
-  selector: 'app-message-input',
-  templateUrl: './message-input.component.html',
-  styleUrls: ['./message-input.component.scss'],
+  selector: "app-message-input",
+  templateUrl: "./message-input.component.html",
+  styleUrls: ["./message-input.component.scss"],
 })
 export class MessageInputComponent implements OnInit, AfterViewInit {
-  @ViewChild('addMessage') addMessageBtn;
-  @ViewChild('messageInput') messageInput;
+  @ViewChild("addMessage") addMessageBtn;
+  @ViewChild("messageInput") messageInput;
+
+  slashCommands = [
+    {
+      command: "/help",
+      description: "Show all available commands",
+      action: () => {
+        this.messagesService.addEphmeralMessage("help");
+      }
+    },
+    {
+      command: "/list",
+      description: "Show all messages",
+      action: () => {
+        this.messagesService.addEphmeralMessage("list");
+      }
+    },
+    {
+      command: "/backup",
+      description: "Backup all messages",
+      action: () => {
+        this.messagesService.addEphmeralMessage("backup");
+      }
+    },
+    {
+      command: "/restore",
+      description: "Restore all messages",
+      action: () => {
+        this.messagesService.addEphmeralMessage("restore");
+      }
+    },
+    {
+      command: "/hi",
+      description: "Say hi to the bot",
+      action: () => {
+        this.messagesService.addEphmeralMessage("hi");
+      }
+    },
+  ];
+
+  possibleSlashCommands = [];
+
   fg: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private messagesService: MessagesService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.fg = this.formBuilder.group({
-      currentMessage: ['', Validators.required]
+      currentMessage: ["", Validators.required],
     });
   }
 
-  ngAfterViewInit(): void {
-    // const inputEnterKeyup$ = fromEvent<any>(this.messageInput.el, 'keyup')
-    //   .pipe(
-    //     filter(event => event.key === 'Enter')
-    //   );
-    const sendButtonClick$ = fromEvent(this.addMessageBtn.el, 'click');
+  handleAction(slashCommand) {
+    slashCommand.action();
+    this.fg.controls.currentMessage.reset();
+  }
 
-    // const messageSend$ = merge(inputEnterKeyup$, sendButtonClick$)
-    const messageSend$ = merge(sendButtonClick$)
-      .pipe(
-        filter(() => this.fg.controls.currentMessage.valid),
-        map(() => this.fg.controls.currentMessage.value),
-        tap(console.log),
-        tap(() => this.fg.controls.currentMessage.reset()),
-        switchMap((message) => {
-          return this.messagesService.addMessage(message);
-        })
-      );
+  ngAfterViewInit(): void {
+    const sendButtonClick$ = fromEvent(this.addMessageBtn.el, "click");
+
+    const messageSend$ = merge(sendButtonClick$).pipe(
+      filter(() => this.fg.controls.currentMessage.valid),
+      map(() => this.fg.controls.currentMessage.value),
+      tap(console.log),
+      tap(() => this.fg.controls.currentMessage.reset()),
+      switchMap((message) => {
+        return this.messagesService.addMessage(message);
+      })
+    );
+
+    this.fg.valueChanges
+      .pipe(map((value) => value.currentMessage))
+      .subscribe((message: string) => {
+        if (message?.startsWith("/")) {
+          this.possibleSlashCommands = this.slashCommands.filter(
+            (slashCommand) => slashCommand.command.includes(message)
+          );
+        } else {
+          this.possibleSlashCommands = [];
+        }
+      });
 
     messageSend$.subscribe(noop);
   }

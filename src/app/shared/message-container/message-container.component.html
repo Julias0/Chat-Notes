@@ -1,5 +1,9 @@
 <div #messageContainer class="messages-container">
     <app-message [message]="message" *ngFor="let message of messages$ | async as list"></app-message>
+    <ng-container *ngIf="ephemeralMessage$|async as ephemeralMessage">
+        <app-message [isEphemeral]="true" [message]="ephemeralMessage"></app-message>
+    </ng-container>
 </div>
+
 
 

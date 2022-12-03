@@ -1,3 +1,10 @@
+<ion-toolbar *ngIf="possibleSlashCommands.length > 0">
+  <ion-list>
+    <ion-item button *ngFor="let command of possibleSlashCommands | slice: 0:2" (click)="handleAction(command)">
+      <strong> {{ command.command }} </strong>  <span class="command-description">{{ command.description }}</span>
+    </ion-item>
+  </ion-list>
+</ion-toolbar>
 <ion-toolbar>
   <form class="ion-padding" [formGroup]="fg">
     <ion-textarea #messageInput formControlName="currentMessage" [autofocus]="true" placeholder="Enter message here" rows="1" maxlength="800">

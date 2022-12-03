@@ -16,6 +16,8 @@ export class MessageComponent implements OnInit {
 
   @Input() message: Message;
 
+  @Input() isEphemeral: boolean = false;
+
   constructor(
     public actionSheetController: ActionSheetController,
     private messagesService: MessagesService,

@@ -5,6 +5,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { delay, startWith, tap, concatMap, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { messageListType } from 'src/app/core/enums/messageListTypes.enum';
 import { SearchService } from 'src/app/core/services/search.service';
+import { MessagesService } from 'src/app/core/services/messages.service';
 
 @Component({
   selector: 'app-message-container',
@@ -19,10 +20,12 @@ export class MessageContainerComponent implements OnInit, AfterViewInit, OnChang
   searchText$: BehaviorSubject<string> = new BehaviorSubject('');
 
   messages$: Observable<Message[]>;
+  ephemeralMessage$: Observable<Message>;
   updateDom$: Subject<any> = new Subject();
 
   constructor(
-    private searchService: SearchService
+    private searchService: SearchService,
+    private messageService: MessagesService
   ) { }
 
   calculateDiff(date1, date2) {
@@ -87,6 +90,8 @@ export class MessageContainerComponent implements OnInit, AfterViewInit, OnChang
     ).subscribe(() => {
       that.scrollToBottom();
     });
+
+    that.ephemeralMessage$ = that.messageService.getEphemeralMessage();
 
     that.scrollToBottom();
   }
