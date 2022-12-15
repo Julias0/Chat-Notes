@@ -97,17 +97,18 @@ export class MessageInputComponent implements OnInit, AfterViewInit {
       })
     );
 
-    this.fg.valueChanges
-      .pipe(map((value) => value.currentMessage))
-      .subscribe((message: string) => {
-        if (message?.startsWith("/")) {
-          this.possibleSlashCommands = this.slashCommands.filter(
-            (slashCommand) => slashCommand.command.includes(message)
-          );
-        } else {
-          this.possibleSlashCommands = [];
-        }
-      });
+    // enable to start with slash command
+    // this.fg.valueChanges
+    //   .pipe(map((value) => value.currentMessage))
+    //   .subscribe((message: string) => {
+    //     if (message?.startsWith("/")) {
+    //       this.possibleSlashCommands = this.slashCommands.filter(
+    //         (slashCommand) => slashCommand.command.includes(message)
+    //       );
+    //     } else {
+    //       this.possibleSlashCommands = [];
+    //     }
+    //   });
 
     messageSend$.subscribe(noop);
   }
