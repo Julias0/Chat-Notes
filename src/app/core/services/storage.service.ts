@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Plugins } from '@capacitor/core';
-
-const { Storage } = Plugins;
+import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +10,14 @@ export class StorageService {
   constructor() { }
 
   async set(key: string, value: any) {
-    return await Storage.set({
+    return await Preferences.set({
       key,
       value: JSON.stringify(value)
     });
   }
 
   async get(key: string) {
-    const stringifiedObject = await Storage.get({
+    const stringifiedObject = await Preferences.get({
       key
     });
 
