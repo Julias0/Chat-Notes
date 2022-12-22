@@ -77,6 +77,11 @@ export class MessageInputComponent implements OnInit, AfterViewInit {
     this.fg = this.formBuilder.group({
       currentMessage: ["", Validators.required],
     });
+
+    this.messagesService.getSetCurrentMessage().subscribe(message => {
+      this.fg.controls.currentMessage.setValue(message);
+      console.log(this.messageInput.el.querySelector('textarea').focus());
+    });
   }
 
   handleAction(slashCommand) {

@@ -6,11 +6,13 @@
     <ion-title *ngIf="!isSearchActive">
       Notes
     </ion-title>
-    <div *ngIf="isSearchActive" class="notes-search-container">
-      <ion-input [(ngModel)]="searchText" placeholder="Enter search here"></ion-input>
+    <div #searchBar>
+      <div *ngIf="isSearchActive" class="notes-search-container">
+        <ion-input [(ngModel)]="searchText" placeholder="Enter search here"></ion-input>
+      </div>
     </div>
     <ion-buttons slot="end">
-      <ion-button (click)="isSearchActive=!isSearchActive;searchText=''">
+      <ion-button (click)="onSearchClick()">
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
       </ion-button>
     </ion-buttons>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Message } from '../models/message.model';
 import { filter, map } from 'rxjs/operators';
 import { StorageService } from './storage.service';
@@ -11,6 +11,7 @@ export class MessagesService {
 
   private messages = new BehaviorSubject<Message[]>([]);
   private ephemeralMessages = new BehaviorSubject<Message>(null);
+  private setCurrentMessage = new Subject<string>();
 
   constructor(
     private storageService: StorageService
@@ -49,6 +50,10 @@ export class MessagesService {
     return this.messages.asObservable();
   }
 
+  getSetCurrentMessage() {
+    return this.setCurrentMessage.asObservable();
+  }
+
   addMessage(messageBody: string) {
     const that = this;
     const currentMessages = this.messages.getValue();
@@ -82,6 +87,14 @@ export class MessagesService {
     });
 
     return that.getMyMessages();
+  }
+
+  copyMessage(messageId) {
+    const that = this;
+    const currentMessages = that.messages.getValue();
+    const message = currentMessages.find(currentMessage => currentMessage.id === messageId);
+   
+    this.setCurrentMessage.next(message.main_message);
   }
 
   restoreMessage(messageId) {

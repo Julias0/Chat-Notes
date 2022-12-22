@@ -156,9 +156,21 @@ export class MessageComponent implements OnInit {
     };
   }
 
+  getCopyAction() {
+    const that = this;
+    return {
+      text: 'Copy',
+      icon: 'copy',
+      handler: async () => {
+        that.messagesService.copyMessage(this.message.id);
+      }
+    };
+  }
+
   async openActionSheet() {
     const that = this;
     const buttons = [];
+    buttons.push(that.getCopyAction());
     buttons.push(that.getShareAction());
     buttons.push(that.getDeleteAction());
     buttons.push(that.getFavouriteAction());
