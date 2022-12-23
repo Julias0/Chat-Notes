@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'deleted',
     loadChildren: () => import('./deleted/deleted.module').then(m => m.DeletedPageModule)
+  },
+  {
+    path: 'signin',
+    loadChildren: () => import('./signin/signin.module').then( m => m.SigninPageModule)
   }
 ];
 
