@@ -126,4 +126,10 @@ export class MessagesService {
 
     return that.getMyMessages();
   }
+
+  restoreMessages(messages: Message[]) {
+    this.storageService.set('my_messages', messages).then(() => {
+      this.messages.next(messages);
+    });
+  }
 }

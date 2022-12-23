@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Settings
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Sync Messages</ion-card-title>
+      <ion-card-subtitle>Backup all your messages in the cloud</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-button (click)="syncMessages()">
+        <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+        Sync
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resore Messages</ion-card-title>
+      <ion-card-subtitle>Restore all your messages in the cloud</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-button (click)="restoreMessages()">
+        
+        <ion-icon slot="start" name="arrow-down-circle-outline"></ion-icon>
+        Restore
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
