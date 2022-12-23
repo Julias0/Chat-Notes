@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { MessageInputComponent } from './message-input.component';
@@ -7,7 +7,7 @@ describe('MessageInputComponent', () => {
   let component: MessageInputComponent;
   let fixture: ComponentFixture<MessageInputComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MessageInputComponent ],
       imports: [IonicModule.forRoot()]
