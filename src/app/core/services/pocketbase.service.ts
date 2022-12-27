@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
-import PocketBase from "pocketbase";
-import { BehaviorSubject, from, Observable, of } from "rxjs";
-import { environment } from "src/environments/environment";
-import { Message } from "../models/message.model";
-import { concatMap, map, reduce, switchMap, tap } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import PocketBase from 'pocketbase';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { Message } from '../models/message.model';
+import { concatMap, map, reduce, switchMap, tap } from 'rxjs/operators';
 
 const pb = new PocketBase(environment.API_URL);
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class PocketBaseService {
   authStateChanged$: BehaviorSubject<any>;
@@ -29,7 +29,11 @@ export class PocketBaseService {
       passwordConfirm: password,
     };
 
-    const record = await pb.collection("users").create(data);
+    const record = await pb.collection('users').create(data);
+
+    await pb
+      .collection('users')
+      .authWithPassword(email, password);
 
     this.authStateChanged$.next(pb.authStore.model);
 
@@ -38,7 +42,7 @@ export class PocketBaseService {
 
   async signIn(email: string, password: string) {
     const authData = await pb
-      .collection("users")
+      .collection('users')
       .authWithPassword(email, password);
 
     this.authStateChanged$.next(pb.authStore.model);
@@ -51,21 +55,21 @@ export class PocketBaseService {
   }
 
   getAllMessagesInCloud() {
-    return pb.collection("note").getFullList(200 /* batch size */, {
-      sort: "-created",
+    return pb.collection('note').getFullList(200 /* batch size */, {
+      sort: '-created',
     });
   }
 
   deleteMessage(id) {
-    return pb.collection("note").delete(id);
+    return pb.collection('note').delete(id);
   }
 
   syncMessages(messages: Message[]) {
     const existingMessageDeletion$ = from(this.getAllMessagesInCloud()).pipe(
-      tap((existingMessages: []) => console.log('loaded messages from cloud',existingMessages)),
+      tap((existingMessages: []) => console.log('loaded messages from cloud', existingMessages)),
       switchMap((existingMessages: []) => from(existingMessages)),
       concatMap((existingMessage: { id: string }) => this.deleteMessage(existingMessage.id)),
-      reduce((acc, curr) => acc.concat(curr),[]),
+      reduce((acc, curr) => acc.concat(curr), []),
       tap(_ => console.log('deleted messages in cloud')),
     );
 
@@ -81,11 +85,11 @@ export class PocketBaseService {
           created_time: message.created_at,
         };
 
-        return from(pb.collection("note").create(data));
+        return from(pb.collection('note').create(data));
       }),
-      reduce((acc, curr) => acc.concat(curr),[]),
+      reduce((acc, curr) => acc.concat(curr), []),
       tap(_ => console.log('deleted messages in cloud')),
-    )
+    );
   }
 
   restoreMessages(): Observable<Message[]> {
