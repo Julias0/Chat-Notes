@@ -33,3 +33,4 @@ android
 .gradle
 
 src/environments/environment.prod.ts
+.angular
