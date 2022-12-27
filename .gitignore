@@ -33,6 +33,3 @@ android
 .gradle
 
 src/environments/environment.prod.ts
-
-api/pb_data
-api/pb_migrations
