@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:backend": "./api/pocketbase serve --http=0.0.0.0:8080",
+    "start:backend": "./api/pocketbase serve --http=0.0.0.0:$PORT",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
