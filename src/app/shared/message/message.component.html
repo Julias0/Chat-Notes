@@ -1,12 +1,23 @@
-<ion-card [ngClass]="{'ephemeral': isEphemeral}" #cardElement>
-  <ion-card-content>
-    <div *ngIf="!isEphemeral" class="message-controls">
-      <ion-button fill="clear" slot="end" (click)="openActionSheet()">
-        <ion-icon slot="icon-only" name="ellipsis-horizontal-outline"></ion-icon>
-      </ion-button>      
-    </div>
-    <div class="message-content">
-      {{ message.main_message }}
-    </div>
-  </ion-card-content>
-</ion-card>
+<ng-container *ngIf="loading; else loadedElement">
+  <ion-card>
+    <ion-card-content>
+      <div class="message-content">
+        <ion-skeleton-text class="skeleton-text" animated></ion-skeleton-text>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ng-container>
+<ng-template #loadedElement>
+  <ion-card [ngClass]="{'ephemeral': isEphemeral}" #cardElement>
+    <ion-card-content>
+      <div *ngIf="!isEphemeral" class="message-controls">
+        <ion-button fill="clear" slot="end" (click)="openActionSheet()">
+          <ion-icon slot="icon-only" name="ellipsis-horizontal-outline"></ion-icon>
+        </ion-button>      
+      </div>
+      <div class="message-content">
+        {{ message.main_message }}
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ng-template>
