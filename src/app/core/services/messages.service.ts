@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Message } from '../models/message.model';
-import { filter, map } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 
 @Injectable({

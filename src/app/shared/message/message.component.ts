@@ -18,6 +18,8 @@ export class MessageComponent implements OnInit {
 
   @Input() isEphemeral: boolean = false;
 
+  @Input() loading = false;
+
   constructor(
     public actionSheetController: ActionSheetController,
     private messagesService: MessagesService,

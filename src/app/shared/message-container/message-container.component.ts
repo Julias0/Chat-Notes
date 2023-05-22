@@ -22,6 +22,8 @@ export class MessageContainerComponent implements OnInit, AfterViewInit, OnChang
   messages$: Observable<Message[]>;
   ephemeralMessage$: Observable<Message>;
   updateDom$: Subject<any> = new Subject();
+  isMessagesLoading = true;
+  skeletonArray = new Array(5);
 
   constructor(
     private searchService: SearchService,
@@ -65,6 +67,10 @@ export class MessageContainerComponent implements OnInit, AfterViewInit, OnChang
 
   ngAfterViewInit() {
     const that = this;
+
+    setTimeout(() => {
+      that.isMessagesLoading = false;
+    }, 5000);
 
     const searchFiltration$ = that.searchText$.pipe(
       switchMap((search) => that.searchService.searchByText(that.filterElements, search))
