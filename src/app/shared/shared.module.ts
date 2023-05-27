@@ -5,6 +5,7 @@ import { MessageContainerComponent } from './message-container/message-container
 import { MessageComponent } from './message/message.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { SearchComponent } from './search/search.component';
 
 
 
@@ -12,7 +13,8 @@ import { IonicModule } from '@ionic/angular';
   declarations: [
     MessageInputComponent,
     MessageContainerComponent,
-    MessageComponent
+    MessageComponent,
+    SearchComponent
   ],
   imports: [
     CommonModule,

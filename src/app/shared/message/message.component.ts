@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Message } from 'src/app/core/models/message.model';
-import { ActionSheetController, AlertController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, ModalController, ToastController } from '@ionic/angular';
 import { MessagesService } from 'src/app/core/services/messages.service';
 import { take } from 'rxjs/internal/operators/take';
 
 import { Plugins } from '@capacitor/core';
+import { SearchComponent } from '../search/search.component';
 const { Share } = Plugins;
 
 @Component({
@@ -22,7 +23,8 @@ export class MessageComponent implements OnInit {
     public actionSheetController: ActionSheetController,
     private messagesService: MessagesService,
     private alertController: AlertController,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -168,24 +170,33 @@ export class MessageComponent implements OnInit {
   }
 
   async openActionSheet() {
-    const that = this;
-    const buttons = [];
-    buttons.push(that.getCopyAction());
-    buttons.push(that.getShareAction());
-    buttons.push(that.getDeleteAction());
-    buttons.push(that.getFavouriteAction());
-    buttons.push({
-      text: 'Cancel',
-      icon: 'close',
-      role: 'cancel'
+    const searchComponent = await this.modalController.create({
+      component: SearchComponent
     });
 
-    const actionSheet = await this.actionSheetController.create({
-      header: 'What do you want to do to this message?',
-      buttons
-    });
+    await searchComponent.present();
 
-    await actionSheet.present();
+    const { data } = await searchComponent.onWillDismiss();
+
+    console.log(data);
+    // const that = this;
+    // const buttons = [];
+    // buttons.push(that.getCopyAction());
+    // buttons.push(that.getShareAction());
+    // buttons.push(that.getDeleteAction());
+    // buttons.push(that.getFavouriteAction());
+    // buttons.push({
+    //   text: 'Cancel',
+    //   icon: 'close',
+    //   role: 'cancel'
+    // });
+
+    // const actionSheet = await this.actionSheetController.create({
+    //   header: 'What do you want to do to this message?',
+    //   buttons
+    // });
+
+    // await actionSheet.present();
   }
 
 }
